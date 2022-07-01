@@ -26,10 +26,26 @@ async function run() {
             res.send(items);
         });
 
+        // Item details
+        app.get('/item/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const item = await itemCollection.findOne(query);
+            res.send(item);
+        });
+
         // Add items
         app.post('/item', async (req, res) => {
             const newItem = req.body;
             const result = await itemCollection.insertOne(newItem);
+            res.send(result);
+        });
+
+        // Delete items
+        app.delete('/item/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await itemCollection.deleteOne(query);
             res.send(result);
         });
     }
